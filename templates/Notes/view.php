@@ -3,7 +3,7 @@
 //var_dump($note); exit();
 ?>
 
-<div id="app_2">
+<div id="note_view">
     <div class="card-body">
 
         <table class="table table-hover">
@@ -20,6 +20,7 @@
                 <td>{{ note.title }}</td>
             </tr>
             </tbody>
+            <button type="button" class="btn btn-warning" onclick='window.location.href="/notes"'>Go Back</button>
         </table>
     </div>
 </div>
@@ -28,6 +29,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 
 <script>
+    var noteId = "<?php echo "$note->id"?>";
+    //console.log(x);
     const { createApp } = Vue;
 
     createApp({
@@ -44,12 +47,12 @@
         },
         mounted() {
             //console.warn(id);
-            axios.get(`http://localhost:8765/notes/view/`+note.id).then(response => {
+            axios.get(`http://localhost:8765/notes/view/`+noteId).then(response => {
                 this.note = response.data.note;
                 console.log(response.data.note)
             })
         },
 
 
-    }).mount('#app_2')
+    }).mount('#note_view')
 </script>
