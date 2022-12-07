@@ -18,9 +18,14 @@
 
                 <td>{{ note.datetime }}</td>
                 <td>{{ note.title }}</td>
+
             </tr>
+
+            <button type="button" class="btn btn-primary me-2" onclick='window.location.href="/NotesCake/notes"'>Go Back</button>
+
             </tbody>
-            <button type="button" class="btn btn-warning" onclick='window.location.href="/notes"'>Go Back</button>
+
+
         </table>
     </div>
 </div>
@@ -32,6 +37,7 @@
     var noteId = "<?php echo "$note->id"?>";
     //console.log(x);
     const { createApp } = Vue;
+    const url = 'http://localhost/NotesCake/notes';
 
     createApp({
         data() {
@@ -47,10 +53,12 @@
         },
         mounted() {
             //console.warn(id);
-            axios.get(`http://localhost:8765/notes/view/`+noteId).then(response => {
+            axios.get(url+`/view/`+noteId).then(response => {
                 this.note = response.data.note;
                 console.log(response.data.note)
-            })
+            });
+
+
         },
 
 

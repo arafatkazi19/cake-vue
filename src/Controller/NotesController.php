@@ -30,7 +30,9 @@ class NotesController extends AppController
     public function index()
     {
 
-        $notes = $this->Notes->find('all')->all();
+        $notes = $this->Notes->find('all', array(
+            'order' => array('Notes.id' => 'desc')
+        ))->all();
 
         $this->set(['notes' => $notes]);
         $this->viewBuilder()->setOption('serialize', true);
@@ -79,7 +81,7 @@ class NotesController extends AppController
         $this->viewBuilder()->setOption('serialize', ['note', 'message']);
 //        $this->response->type('json');
 //        $this->response->body(json_encode($note));
-        $this->RequestHandler->renderAs($this, 'json');
+    //    $this->RequestHandler->renderAs($this, 'json');
 
     }
 
@@ -92,7 +94,7 @@ class NotesController extends AppController
      */
     public function edit($id = null)
     {
-        $this->request->allowMethod(['patch', 'post', 'put']);
+        $this->request->allowMethod(['patch', 'post', 'put','get']);
         $note = $this->Notes->get($id);
         $note = $this->Notes->patchEntity($note, $this->request->getData());
         if ($this->Notes->save($note)) {
@@ -102,10 +104,10 @@ class NotesController extends AppController
         }
         $this->set([
             'message' => $message,
-            'recipe' => $note,
+            'note' => $note,
         ]);
         $this->viewBuilder()->setOption('serialize', ['note', 'message']);
-        $this->RequestHandler->renderAs($this, 'json');
+//        $this->RequestHandler->renderAs($this, 'json');
     }
 
 
@@ -119,7 +121,7 @@ class NotesController extends AppController
     public function delete($id = null)
     {
        // var_dump("hello delete"); exit();
-        $this->request->allowMethod(['delete']);
+        $this->request->allowMethod(['delete','get']);
         $note = $this->Notes->get($id);
         $message = 'Deleted';
         if (!$this->Notes->delete($note)) {
